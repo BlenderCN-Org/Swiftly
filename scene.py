@@ -76,7 +76,7 @@ class SWIFTLY_OT_CopySceneSettings(bpy.types.Operator):
                 sc.render.engine = mainsc.render.engine
                 # # sc.render.ffmpeg = mainsc.render.ffmpeg
                 # # sc.render.file_extension = mainsc.render.file_extension
-                sc.render.filepath = mainsc.render.filepath
+                # sc.render.filepath = mainsc.render.filepath
                 sc.render.film_transparent = mainsc.render.film_transparent
                 sc.render.filter_size = mainsc.render.filter_size
                 sc.render.fps = mainsc.render.fps

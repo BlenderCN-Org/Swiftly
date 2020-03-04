@@ -31,4 +31,4 @@ Properties -> Scene -> "Swiftly: Copy scene settings to other scenes" -> "copy C
 
 every setting for cycles inside render and output-panel should copy over BUT not, as (in my eyes) scene depended :
 
-frame start and end, frame time remapping, resolution XY and bordersetting
+frame start and end, frame time remapping, resolution XY, bordersetting, and outputfile-path/name
