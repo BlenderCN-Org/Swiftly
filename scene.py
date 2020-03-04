@@ -1,3 +1,5 @@
+import bpy
+
 # ##### BEGIN GPL LICENSE BLOCK #####
 #
 #  This program is free software; you can redistribute it and/or
@@ -15,146 +17,6 @@
 #  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # ##### END GPL LICENSE BLOCK #####
-
-import bpy
-import os
-from sys import platform
-
-bl_info = {
-    "name": "Swiftly",
-    "description": "additional commands for a faster workflow",
-    "author": "BlendyBlend",
-    "version": (1, 0),
-    "blender": (2, 80, 0),
-    "location": "View3D > Add > Mesh",
-    "warning": "",  # used for warning icon and text in addons panel
-    "wiki_url": "none",
-    "tracker_url": "https://twitter.com/blendyblend",
-    "support": "COMMUNITY",
-    "category": "Add Mesh"
-}
-
-
-# GPU Panel -> UI
-class GpuPanel(bpy.types.Panel):
-    bl_idname = "SWIFTLY_PANEL1_PT_gpuinfo"
-    bl_label = "GPU info"
-    bl_space_type = "VIEW_3D"
-    bl_region_type = "UI"
-    bl_category = "Swiftly"
-
-    _gpuinfo1 = ""
-    _gpuinfo2 = ""
-
-    def draw(self, context):
-        layout = self.layout
-
-        layout.operator(operator="view3d.swiftlygetgpuinfo", text="update", icon="RECOVER_LAST")
-
-        layout.label(text=self._gpuinfo1, icon="OUTLINER_OB_FORCE_FIELD")
-        layout.label(text=self._gpuinfo2, icon="OUTLINER_OB_FORCE_FIELD")
-
-        # col = layout.column(align=True)
-
-        # temparr = NVsmi_getinfo()
-
-        # row = col.row(align=True)
-        # row.label(text=temparr[0] + " C", icon="OUTLINER_OB_FORCE_FIELD")
-        # row.label(text=temparr[1], icon="FORCE_WIND")
-
-        # row.label(text=self._gputemp, icon="OUTLINER_OB_FORCE_FIELD")
-        # row.label(text=self._fanspeed, icon="FORCE_WIND")
-        # row.operator("view3d.swiftlygpuinfoget", text="Essential Menu", icon="OUTLINER_OB_FORCE_FIELD")
-        # self.layout.label(text=temparr[0], icon="OUTLINER_OB_FORCE_FIELD")
-        # self.layout.label(text=temparr[1], icon="FORCE_WIND")
-
-
-# GPUinfo -> Operator
-class SWIFTLY_OT_GetGPUinfo(bpy.types.Operator):
-    """get gpu info from sys command"""      # Use this as a tooltip for menu items and buttons.
-    bl_idname = "view3d.swiftlygetgpuinfo"        # Unique identifier for buttons and menu items to reference.
-    bl_label = "Get GPU info"         # Display name in the interface.
-
-    def execute(self, context):        # execute() is called when running the operator.
-        # self.report({"INFO"}, "button pressed")
-        # gpuinfostr = str.split(NVsmi_getinfo(), "/n")
-        gpuinfostr = NVsmi_getinfo().splitlines()
-        print(len(gpuinfostr))
-        if len(gpuinfostr) == 1:
-            GpuPanel._gpuinfo1 = gpuinfostr[0]
-        else:
-            GpuPanel._gpuinfo1 = gpuinfostr[0]
-            GpuPanel._gpuinfo2 = gpuinfostr[1]
-
-        # GpuPanel._gputemp = temparr[0] + " C"
-        # GpuPanel._fanspeed = temparr[1]
-
-        return {'FINISHED'}
-
-
-# slow system call
-def NVsmi_getinfo():
-    # system call
-    # timeline = (datetime.datetime.now().strftime("%Y%m%d%H%M%S"))
-    # print(timeline)
-
-    if platform == "linux" or platform == "linux2":
-        # linux
-        gpuinfo = str(os.popen(r'nvidia-smi --query-gpu=temperature.gpu,fan.speed,memory.used,memory.free --format=csv,noheader').read())
-    elif platform == "darwin":
-        # OS X
-        print("! no osx command, yet here !")
-    elif platform == "win32":
-        gpuinfo = str(os.popen(r'"C:\Program Files\NVIDIA Corporation\NVSMI\nvidia-smi.exe" --query-gpu=temperature.gpu,fan.speed,memory.used,memory.free --format=csv,noheader').read())
-    else:
-        print("unknown platform:" + platform)
-
-    # temparr = str.split(temp, ", ")
-    return gpuinfo.replace('\n', '\r\n')
-
-
-# RiggingHelper -> UI
-def AddEmptyRigHlp_button(self, context):
-    self.layout.operator(
-        SWIFTLY_OT_AddEmptyRigHlp.bl_idname,
-        text="Swiftly: add RiggingHelper",
-        icon='OUTLINER_OB_EMPTY')
-
-
-# RiggingHelper -> Operator
-class SWIFTLY_OT_AddEmptyRigHlp(bpy.types.Operator):
-    """Add Empty to current selected location"""      # Use this as a tooltip for menu items and buttons.
-    bl_idname = "view3d.swiftlyemptyadd"        # Unique identifier for buttons and menu items to reference.
-    bl_label = "Swiftly: Add Empty to current selected location"         # Display name in the interface.
-    bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
-
-    def execute(self, context):        # execute() is called when running the operator.
-
-        bpy.ops.view3d.snap_cursor_to_selected()
-
-        empt = bpy.data.objects.new("empty", None)
-
-        empt.location = bpy.context.scene.cursor.location
-        empt.name = "RiggingHelper"
-        empt.empty_display_size = 0.08
-        empt.empty_display_type = 'SPHERE'
-
-        # create new collection
-        coll = bpy.data.collections.new('RiggingHelpers')
-        # or find the existing collection
-        coll = bpy.data.collections['RiggingHelpers']
-
-        # link the newCol to the scene
-        try:
-            bpy.context.scene.collection.children.link(coll)
-        except Exception:
-            print("")
-
-        # link the object to collection
-        coll.objects.link(empt)
-
-        # Lets Blender know the operator finished successfully.
-        return {'FINISHED'}
 
 
 # CopySceneSettings -> UI
@@ -485,25 +347,11 @@ class SWIFTLY_OT_CopySceneSettings(bpy.types.Operator):
 
 # Registration and Unregistration
 def register():
-    # RiggingHelper
-    bpy.utils.register_class(SWIFTLY_OT_AddEmptyRigHlp)
-    bpy.types.VIEW3D_MT_mesh_add.append(AddEmptyRigHlp_button)
-    # GPU info
-    bpy.utils.register_class(SWIFTLY_OT_GetGPUinfo)
-    bpy.utils.register_class(GpuPanel)
-    # Copy Scene Settings
     bpy.utils.register_class(CopySceneSettingsPanel)
     bpy.utils.register_class(SWIFTLY_OT_CopySceneSettings)
 
 
 def unregister():
-    # RiggingHelper
-    bpy.utils.unregister_class(SWIFTLY_OT_AddEmptyRigHlp)
-    bpy.types.VIEW3D_MT_mesh_add.remove(AddEmptyRigHlp_button)
-    # GPU info
-    bpy.utils.unregister_class(SWIFTLY_OT_GetGPUinfo)
-    bpy.utils.unregister_class(GpuPanel)
-    # Copy Scene Settings
     bpy.utils.unregister_class(CopySceneSettingsPanel)
     bpy.utils.unregister_class(SWIFTLY_OT_CopySceneSettings)
 
