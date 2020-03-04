@@ -1,6 +1,9 @@
 # Swiftly
  additional commands for a faster workflow
 
+## Install
+Just "Clone or download" -> "Download ZIP", and inside Blender "Install" from the zipfile
+
 ## Features
 ### GPU info
 Get gpu info from nvidia-smi commandline win/linux -> 3Dview N-panel "Swiftly" -> GPU info
@@ -19,13 +22,13 @@ F3 -> "Swiftly: Add Empty to current selected location" or
 
 SHIFT + A -> (m Mesh -> ) a "Swiftly: add RiggingHelper"
 
-A Collection will be used named "RiggingHelpers" with all the "RiggingHelper" empties inside, so can easyly be removed afterwards
+A Collection will be used named "RiggingHelpers" with all the "RiggingHelper" empties inside, so the all can easily be removed afterwards
 
 ### Copy scene settings ###
 Copy scene settings to other scenes
 
 Properties -> Scene -> "Swiftly: Copy scene settings to other scenes" -> "copy CURRENT scene render/output"
 
-everything setting for cycles inside render and output-panel should copy over BUT not, as it is scene depended (in my eyes):
+every setting for cycles inside render and output-panel should copy over BUT not, as (in my eyes) scene depended :
 
 frame start and end, frame time remapping, resolution XY and bordersetting
