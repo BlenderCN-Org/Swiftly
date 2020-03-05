@@ -32,3 +32,15 @@ Properties -> Scene -> "Swiftly: Copy scene settings to other scenes" -> "copy C
 every setting for cycles inside render and output-panel should copy over BUT not, as (in my eyes) scene depended :
 
 frame start and end, frame time remapping, resolution XY, bordersetting, and outputfile-path/name
+
+### Render to Print ###
+set the size of the render for a print
+
+Properties -> Output -> "Swiftly: Render to Print"
+
+You can set the size in centimeters, change the DPI and, optionally, set the pixel size to obtain the actual size.
+
+You can choose the size of the render from various print standard size.
+
+conversion of 2.6 addon to 2.8 https://archive.blender.org/wiki/index.php/Extensions:2.6/Py/Scripts/Render/Render_to_Print/
+
