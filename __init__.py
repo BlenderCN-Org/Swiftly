@@ -33,7 +33,7 @@ bl_info = {
     "category": "Add Mesh"
 }
 
-modulesNames = ['gpu', 'scene', 'empty']
+modulesNames = ['gpu', 'scene', 'empty', 'render_to_print']
 
 
 modulesFullNames = {}
